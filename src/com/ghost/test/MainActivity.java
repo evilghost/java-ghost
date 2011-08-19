@@ -26,11 +26,60 @@ class TestTask extends AsyncTask<Void, Void, Void>
 	}
 }
 
-public class MainActivity 
-	extends Activity 
-	implements TestTask.Feedback<Void, Void>
+public class MainActivity extends Activity 
 {
 	public static String S_TAG = "test";
+	
+	private TestTask.FeedbackBase<Void, Void> m_testFeedback = new TestTask.FeedbackBase<Void, Void>(){
+		@Override
+		public void onPreExecute()
+		{
+			// TODO Auto-generated method stub
+			printMethodName();
+		}
+
+		@Override
+		public void onProgressUpdate(Void... values)
+		{
+			// TODO Auto-generated method stub
+			printMethodName();
+		}
+
+		@Override
+		public void onPostExecute(Void result)
+		{
+			// TODO Auto-generated method stub
+			printMethodName();
+		}
+		
+		@Override
+		public void onCancelled()
+		{
+			// TODO Auto-generated method stub
+			printMethodName();
+		}
+		
+		@Override
+		public void registerTask(AsyncTask<?, Void, Void> task)
+		{
+			// TODO Auto-generated method stub
+			super.registerTask(task);
+			printMethodName();
+		}
+		
+		@Override
+		public void unregisterTask(AsyncTask<?, Void, Void> task)
+		{
+			// TODO Auto-generated method stub
+			super.unregisterTask(task);
+			printMethodName();
+		}
+		
+		private void printMethodName()
+		{
+			Log.v(S_TAG, new Exception().getStackTrace()[1].getMethodName());
+		}
+	};
 
 	public MainActivity()
 	{
@@ -43,33 +92,15 @@ public class MainActivity
 	    super.onCreate(savedInstanceState);
 	
 	    // TODO Auto-generated method stub
-		new TestTask(this).execute((Void)null);
-	}
-
-	@Override
-	public void onPreExecute()
-	{
-		// TODO Auto-generated method stub
-		printMethodName();
-	}
-
-	@Override
-	public void onProgressUpdate(Void... values)
-	{
-		// TODO Auto-generated method stub
-		printMethodName();
-	}
-
-	@Override
-	public void onPostExecute(Void result)
-	{
-		// TODO Auto-generated method stub
-		printMethodName();
+		new TestTask(m_testFeedback).execute((Void)null);
 	}
 	
-	private static void printMethodName()
+	@Override
+	protected void onDestroy()
 	{
-		Log.v(S_TAG, new Exception().getStackTrace()[1].getMethodName());
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		m_testFeedback.cancelAll(true);
 	}
 
 }
