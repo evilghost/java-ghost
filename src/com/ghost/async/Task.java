@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 /**
  * 重写UI线程中的回调方法，将回调转发给反馈对象*/
-public abstract class AsyncTask<Params, Progress, Result> 
+public abstract class Task<Params, Progress, Result> 
 	extends android.os.AsyncTask<Params, Progress, Result> 
 {
 	public static interface Feedback<Progress, Result> {
@@ -14,31 +14,31 @@ public abstract class AsyncTask<Params, Progress, Result>
 		public void onProgressUpdate(Progress... values);
 		public void onPostExecute(Result result);
 		public void onCancelled();
-		public void registerTask(AsyncTask<?, Progress, Result> task);
-		public void unregisterTask(AsyncTask<?, Progress, Result> task);
+		public void registerTask(Task<?, Progress, Result> task);
+		public void unregisterTask(Task<?, Progress, Result> task);
 	}
 	public static abstract class FeedbackBase<Progress, Result>
 		implements Feedback<Progress, Result>
 	{
-		protected ArrayList<AsyncTask<?, Progress, Result>> m_tasksArrayList = new ArrayList<AsyncTask<?, Progress, Result>>();
+		protected ArrayList<Task<?, Progress, Result>> m_tasksArrayList = new ArrayList<Task<?, Progress, Result>>();
 		public void onPreExecute(){}
 		public void onProgressUpdate(Progress... values){}
 		public void onPostExecute(Result result){}
 		public void onCancelled(){}
-		public void registerTask(AsyncTask<?, Progress, Result> task)
+		public void registerTask(Task<?, Progress, Result> task)
 		{
 			m_tasksArrayList.add(task);
 		}
-		public void unregisterTask(AsyncTask<?, Progress, Result> task)
+		public void unregisterTask(Task<?, Progress, Result> task)
 		{
 			m_tasksArrayList.remove(task);
 		}
 		
 		public void cancelAll(boolean mayInterruptIfRunning)
 		{
-			ArrayList<AsyncTask<?, Progress, Result>> tempArrayList = m_tasksArrayList;
-			m_tasksArrayList = new ArrayList<AsyncTask<?, Progress, Result>>();
-			for(Iterator<AsyncTask<?, Progress, Result>> items = tempArrayList.iterator(); items.hasNext();)
+			ArrayList<Task<?, Progress, Result>> tempArrayList = m_tasksArrayList;
+			m_tasksArrayList = new ArrayList<Task<?, Progress, Result>>();
+			for(Iterator<Task<?, Progress, Result>> items = tempArrayList.iterator(); items.hasNext();)
 			{
 				  items.next().cancel(mayInterruptIfRunning);
 			}
@@ -47,12 +47,12 @@ public abstract class AsyncTask<Params, Progress, Result>
 	
 	protected WeakReference<Feedback<Progress, Result>> m_feedbackReference;
 	
-	public AsyncTask()
+	public Task()
 	{
 		
 	}
 	
-	public AsyncTask(Feedback<Progress, Result> feedback)
+	public Task(Feedback<Progress, Result> feedback)
 	{
 		// TODO Auto-generated constructor stub
 		setFeedback(feedback);

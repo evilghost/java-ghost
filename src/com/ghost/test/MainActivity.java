@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.ghost.async.AsyncTask;
+import com.ghost.async.Task;
 
-class TestTask extends AsyncTask<Void, Integer, Void>
+class TestTask extends Task<Void, Integer, Void>
 {
 	public TestTask(Feedback<Integer, Void> feedback)
 	{
@@ -104,7 +104,7 @@ public class MainActivity extends Activity
 			}
 			
 			@Override
-			public void registerTask(AsyncTask<?, Integer, Void> task)
+			public void registerTask(Task<?, Integer, Void> task)
 			{
 				// TODO Auto-generated method stub
 				super.registerTask(task);
@@ -112,7 +112,7 @@ public class MainActivity extends Activity
 			}
 			
 			@Override
-			public void unregisterTask(AsyncTask<?, Integer, Void> task)
+			public void unregisterTask(Task<?, Integer, Void> task)
 			{
 				// TODO Auto-generated method stub
 				super.unregisterTask(task);
