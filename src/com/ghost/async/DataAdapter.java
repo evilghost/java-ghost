@@ -22,33 +22,36 @@ public abstract class DataAdapter<Data> extends Observable{
 	}
 	public Data getData()
 	{
-		switch (getState())
-		{
-		case EMPTY:
-			m_state = State.LOADING;
-			loadData();
-			return getDefaultData();
-		case LOADING:
-		case LOAD_FAILED:
-			return getDefaultData();
-		}
 		return m_data;
 	}
+	public void loadData()
+	{
+		setState(State.LOADING);
+		doLoadData();
+	}
 	
-	protected abstract void loadData();
+	protected void setState(final State state)
+	{
+		if (state != m_state)
+		{
+			m_state = state;
+			notifyObservers();
+		}
+	}
 	
-	protected void onLoadData(Data data)
+	protected abstract void doLoadData();
+	
+	protected void onLoadData(final Data data)
 	{
 		if (null == data)
 		{
-			m_state = State.LOAD_FAILED;
+			setState(State.LOAD_FAILED);
 		}
 		else 
 		{
-			m_state = State.READY;
 			m_data = data;
+			setState(State.READY);
 		}
-		notifyObservers();
 	}
 	
 }
