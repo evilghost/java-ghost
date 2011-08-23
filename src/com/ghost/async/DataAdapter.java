@@ -29,6 +29,11 @@ public abstract class DataAdapter<Data> extends Observable{
 		setState(State.LOADING);
 		doLoadData();
 	}
+	public void clearData()
+	{
+		m_data = null;
+		setState(State.EMPTY);
+	}
 	
 	protected void setState(final State state)
 	{
