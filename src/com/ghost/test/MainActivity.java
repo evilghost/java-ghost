@@ -54,6 +54,8 @@ public class MainActivity extends Activity
 	    super.onCreate(savedInstanceState);
 	
 	    // TODO Auto-generated method stub
+	    setContentView(R.layout.main);
+	    
 	    CreateTestFeedback();
 	    
 		new TestTask(m_testFeedback).execute((Void)null);

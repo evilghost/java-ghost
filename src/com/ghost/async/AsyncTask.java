@@ -21,21 +21,14 @@ public abstract class AsyncTask<Params, Progress, Result>
 		implements Feedback<Progress, Result>
 	{
 		protected ArrayList<AsyncTask<?, Progress, Result>> m_tasksArrayList = new ArrayList<AsyncTask<?, Progress, Result>>();
-		
-		@Override
 		public void onPreExecute(){}
-		@Override
 		public void onProgressUpdate(Progress... values){}
-		@Override
 		public void onPostExecute(Result result){}
-		@Override
 		public void onCancelled(){}
-		@Override
 		public void registerTask(AsyncTask<?, Progress, Result> task)
 		{
 			m_tasksArrayList.add(task);
 		}
-		@Override
 		public void unregisterTask(AsyncTask<?, Progress, Result> task)
 		{
 			m_tasksArrayList.remove(task);
